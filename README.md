@@ -1,4 +1,6 @@
 # Le miel et les abeilles
+![image](https://github.com/marwan-rouissi/miel-abeilles/assets/115158061/9453ca92-7593-4f83-a3c8-884148ff5f60)
+
 
 Ce projet implémente un algorithme génétique pour résoudre le problème du voyageur de commerce (TSP) en utilisant une métaphore de colonie d'abeilles. L'algorithme génétique est une approche heuristique basée sur l'évolution biologique qui cherche à trouver une solution optimale en combinant et en évoluant des solutions candidates.
 
@@ -11,6 +13,8 @@ Le projet est composé de deux fichiers principaux :
 - `beehive.py` : Ce fichier contient la définition des classes `Hive` et `Bee`. La classe `Hive` représente une colonie d'abeilles et la classe `Bee` représente une abeille individuelle. Ces classes contiennent les méthodes nécessaires pour exécuter l'algorithme génétique.
 
 - `main.py` : Ce fichier est utilisé pour exécuter l'algorithme génétique en utilisant les classes définies dans `beehive.py`. Il lit les positions des fleurs à partir d'un fichier CSV, crée une instance de la classe `Hive` et exécute l'algorithme génétique pour un nombre spécifié de générations.
+  
+- `app.py` : Ce fichier permet d'éxecuter le programme depuis une interface graphique Tkinter, invitant l'utilisateur à renseigner un fichier CSV contenant les positions des fleurs, ainsi que le nombre de génération à travers lequel on souhaite itérer.
 
 ## Instructions
 
@@ -21,7 +25,7 @@ Pour exécuter le programme, suivez ces étapes :
 2. Installez les modules nécessaires en exécutant la commande suivante :
 
 ```
-pip install numpy pandas matplotlib
+pip install -r requirements.txt
 ```
 
 3. Placez le fichier CSV contenant les positions des fleurs dans le même répertoire que les fichiers `beehive.py` et `main.py`.
@@ -48,7 +52,7 @@ L'algorithme génétique utilisé dans ce projet suit les étapes classiques d'u
 
 4. **Croisement** : Les abeilles sélectionnées sont croisées entre elles pour créer une nouvelle génération d'abeilles. Le croisement se fait en échangeant des parties du chemin entre deux abeilles parentes pour créer des descendants avec des caractéristiques mixtes.
 
-5. **Mutation** : Pour introduire de la diversité génétique, certaines abeilles subissent une mutation aléatoire. La mutation consiste à modifier légèrement le chemin d'une abeille en inversant certains segments ou en permutant certaines villes.
+5. **Mutation** : Pour introduire de la diversité génétique, certaines abeilles subissent une mutation aléatoire. La mutation consiste à modifier légèrement le chemin d'une abeille en inversant certains segments ou en permutant certaines positions de fleurs.
 
 6. **Répétition** : Les étapes d'évaluation, de sélection, de croisement et de mutation sont répétées pour un certain nombre de générations afin d'améliorer progressivement les solutions candidates.
 
@@ -73,12 +77,13 @@ Voici quelques axes d'amélioration possibles pour le projet :
 2. **Paramètres ajustables** : Rendre les paramètres de l'algorithme génétique ajustables permettrait aux utilisateurs d'expérimenter différentes configurations et d'adapter l'algorithme à des problèmes spécifiques.
 
 3. **Méthodes de sélection avancées** : L'utilisation de méthodes plus avancées de sélection, telles que la sélection par tournoi ou la sélection par rang, peut améliorer l'exploration de l'espace des solutions et accélérer la convergence vers des solutions optimales.
+Dans notre cas, il s'agit d'une sélection par fitness de manière à mieux simuler et représenter l'idée de séléction naturelle.
 
 4. **Méthodes de croisement et de mutation améliorées** : L'exploration de méthodes plus avancées de croisement et de mutation, telles que le croisement à deux points ou la mutation non uniforme, peut améliorer la diversité génétique et accélérer la convergence vers des solutions optimales.
 
 5. **Validation des résultats** : L'ajout de métriques d'évaluation pour mesurer la qualité des solutions trouvées par l'algorithme génétique permettrait une comparaison avec d'autres approches ou des solutions optimales connues pour le problème du TSP.
 
-6. **Interface utilisateur conviviale** : Développer une interface utilisateur conviviale où les utilisateurs peuvent charger facilement leurs propres fichiers CSV contenant les positions des fleurs, ajuster les paramètres et visualiser les résultats faciliterait l'utilisation du programme.
+6. **Interface utilisateur conviviale** : Développer une interface utilisateur conviviale où les utilisateurs peuvent charger facilement leurs propres fichiers CSV contenant les positions des fleurs, ajuster les paramètres et visualiser les résultats faciliterait l'utilisation du programme. (voir le fichier `app.py`)
 
 7. **Tests unitaires et validation** : Ajouter des tests unitaires pour vérifier le bon fonctionnement des différentes parties du code et valider les résultats produits par l'algorithme génétique.
 
