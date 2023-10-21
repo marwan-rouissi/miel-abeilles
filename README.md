@@ -65,6 +65,14 @@ L'algorithme génétique utilisé dans ce projet suit les étapes classiques d'u
 ![image](https://github.com/marwan-rouissi/miel-abeilles/assets/115158061/846aa8bf-9d0b-4fe1-85c1-274187b5f6d2)
 ### Représentation de la moyenne de la fitness de chaque génération:
 ![image](https://github.com/marwan-rouissi/miel-abeilles/assets/115158061/7c9a40ce-1d4f-4f39-8a26-aa82bf93a36f)
+### Représentation de l'arbre généalogique sur 4 générations de la meilleure abeille:
+![image](https://github.com/marwan-rouissi/miel-abeilles/assets/115158061/fb2533cd-b4ef-444c-973e-90e4de1010e7)
+Les abeilles sont représentées par un noeud de couleur (rouge pour la meilleure, orange pour les autres) composé de leur (id, génération) sous forme d'un tuple.
+
+id : l'ordre dans lequelle l'abeille a été conçue
+
+génération : la génération durant laquelle l'abeille a été conçue
+
 
 
 
