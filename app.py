@@ -84,6 +84,7 @@ class App:
         hive.visualize_best_bee()
         hive.visualize_best_bee_through_generations()
         hive.visualize_average_fitness()
+        hive.visualize_genealogical_tree_of_best_bee()
 
 
 if __name__ == '__main__':

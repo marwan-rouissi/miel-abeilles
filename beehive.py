@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import random as rd
+import networkx as nx
 
 
 class Hive:
@@ -15,8 +16,8 @@ class Hive:
         self.bees = []
         self.fitness_history = []
         self.h = []
-    
 
+    
     """generate population of bees"""
     def generate_population(self):
         for x in range(100):
@@ -80,6 +81,17 @@ class Hive:
             for i in bee1.genes:
                 if i not in new_bee2.genes:
                     new_bee2.genes.append(i)
+            new_bee1.parents = [(bee1.id, bee1.generation), (bee2.id, bee2.generation)]
+            new_bee2.parents = [(bee1.id, bee1.generation), (bee2.id, bee2.generation)]
+            new_bee1.parent1 = bee1
+            new_bee1.parent2 = bee2
+            new_bee2.parent1 = bee1
+            new_bee2.parent2 = bee2
+
+            """keep track of the genealogical tree of each bee"""
+            new_bee1.genealogical_tree.append({(new_bee1.id, new_bee1.generation) : [(bee1.id, bee1.generation), (bee2.id, bee2.generation)]})
+            new_bee2.genealogical_tree.append({(new_bee2.id, new_bee2.generation) : [(bee1.id, bee1.generation), (bee2.id, bee2.generation)]})
+
             babies.append(new_bee1)
             babies.append(new_bee2)
             parent_bees.remove(bee1)
@@ -95,6 +107,31 @@ class Hive:
             index1 = rd.randint(0, len(bee.genes)-1)
             index2 = rd.randint(0, len(bee.genes)-1)
             bee.genes[index1], bee.genes[index2] = bee.genes[index2], bee.genes[index1]
+
+
+    """reconstruct the genealogical tree of the best bee by itereating through each bee's parents for 4 generations"""
+    def recontruct_tree(self, bee):
+        current_bee = bee
+        tree = []
+        temp = []
+        temp.append(current_bee)
+        n = 0
+        # while temp != []:
+        while n < 10:
+            current_bee = temp[0]
+            if current_bee.parent1 != None:
+                temp.append(current_bee.parent1)
+            if current_bee.parent2 != None:
+                temp.append(current_bee.parent2)
+
+            temp.remove(current_bee)
+            if {(current_bee.id, current_bee.generation) : current_bee.parents} not in tree:
+                try:
+                    tree.append({(current_bee.id, current_bee.generation) : current_bee.parents})
+                except:
+                    tree.append({(current_bee.id, current_bee.generation) : None})
+            n += 1
+        return tree 
 
 
     """visualize best bee's path"""
@@ -132,6 +169,53 @@ class Hive:
         plt.ylabel("Fitness")
         plt.show()
 
+    
+    """visualize genealogical tree of best bee as a graph from the recontructed tree as a list of dictionaries
+    each dictionary contains the bee's id and generation as a key and the bee's parents as a value"""
+    def visualize_genealogical_tree_of_best_bee(self):
+        G = nx.DiGraph()
+        for i in self.recontruct_tree(self.bees[0]):
+            key = list(i.keys())[0]
+            value = list(i.values())[0]
+            G.add_node(key)
+            G.add_node(value[0])
+            G.add_node(value[1])
+        
+        for i in self.recontruct_tree(self.bees[0]):
+            key = list(i.keys())[0]
+            value = list(i.values())[0]
+            if value != None:
+                G.add_edge(key, value[0])
+                G.add_edge(key, value[1])
+
+        first_key = list(self.recontruct_tree(self.bees[0])[0].keys())[0]
+        root_node = first_key
+
+        node_colors = ['red' if node == root_node else 'orange' for node in G.nodes()]
+
+        """keep the root node at the bottom of the graph"""
+        pos = nx.spring_layout(G, k=50, iterations=50, scale=1, center=(0,0))
+        pos[root_node][1] = -2.0
+        pos[root_node][0] = 0.0
+        nx.draw(G, pos, with_labels=True, node_color=node_colors, node_size=1500, arrows=True, arrowstyle='->', arrowsize=20, width=1, linewidths=2, font_size=10, font_color='black', font_weight='bold')
+
+
+        """legend for the graph
+        red = best bee from last generation
+        blue = other bees
+        node = (id, generation)"""
+        plt.scatter([], [], c='red', s=150, marker=".", label='Last Bee', edgecolors='black')
+        plt.scatter([], [], c='orange', s=150, marker=".", label='Other Bees', edgecolors='black')
+        
+        plt.legend()
+
+        """add labels to edges"""
+        edge_labels = {edge: "Parent" for edge in G.edges()}
+        nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_size=5, font_color='black')
+
+        plt.show()
+
+
 
 class Bee(Hive):
     """Bee class to create a bee
@@ -147,3 +231,8 @@ class Bee(Hive):
         self.id = None
         self.genes = rd.sample(flowers, len(flowers))
         self.fitness = 0
+        self.parent1 = None
+        self.parent2 = None
+        self.parents = []
+
+        self.genealogical_tree = []

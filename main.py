@@ -33,12 +33,24 @@ def GA():
         if x % 10 == 0:
             hive.mutation()
 
-    """Comment lines 39-41 if you don't want to visualize the results
+    print("**********")
+    print("Best bee's (id, generation):")
+    print((hive.bees[0].id, hive.bees[0].generation))
+    
+    print("**********")
+    print("{(bee's id, bee's generation): [(parent1's id, parent1's generation), (parent2's id, parent2's generation)]}")
+    print("**********")
+    for i in hive.recontruct_tree(hive.bees[0]):
+        print(i)
+    print("**********")
+
+    """Comment lines 50-53 if you don't want to visualize the results
     This way you can see the exact time of the execution of the algorithm"""
   
     # hive.visualize_best_bee()
     # hive.visualize_best_bee_through_generations()
     # hive.visualize_average_fitness()
+    # hive.visualize_genealogical_tree_of_best_bee()
 
 
 if __name__ == '__main__':
